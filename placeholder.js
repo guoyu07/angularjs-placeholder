@@ -11,19 +11,25 @@ app.directive('placeholder', function($timeout, $log){
     return {
         link: function(scope, elm, attrs){
             if (attrs.type === 'password') {
-                return;
+		elm.attr('type', 'text')
+		elm.attr('_password', true);
             }
             $timeout(function(){
-                $(elm).val(attrs.placeholder).focus(function(){
+                elm.val(attrs.placeholder).focus(function(){
                     if ($(this).val() == $(this).attr('placeholder')) {
                         $(this).val('');
+			if (elm.attr('_password'))
+			    elm.attr('type', 'password')
                     }
                 }).blur(function(){
                     if ($(this).val() == '') {
                         $(this).val($(this).attr('placeholder'));
+			if (elm.attr('_password'))
+			    elm.attr('type', 'text')
                     }
                 });
             });
         }
-    };
-});
+    }
+};
+	     });
